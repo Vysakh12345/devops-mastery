@@ -7,3 +7,6 @@ python app.py
 
 ## Test
 python -m pytest -v
+
+## Health Endpoint
+The `/health` endpoint returns the application's health status as JSON.
