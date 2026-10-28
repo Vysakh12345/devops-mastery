@@ -1,0 +1,44 @@
+services:
+  app:
+    image: devops-mastery-app:1.0
+    build: .
+    container_name: devops-mastery-app
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-devopsdb}
+      DB_USER: ${DB_USER:-appuser}
+      DB_PASSWORD: ${DB_PASSWORD:-devops_password}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-net
+
+  db:
+    image: postgres:16-alpine
+    container_name: devops-mastery-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-devopsdb}
+      POSTGRES_USER: ${DB_USER:-appuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-devops_password}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    name: app-net
+    driver: bridge
+
+volumes:
+  db_data:
+    name: devops-mastery-db-data
