@@ -34,7 +34,7 @@ pipeline {
         stage('Credential Masking') {
             steps {
                 withCredentials([string(
-                    credentialsId: 'demo',
+                    credentialsId: 'secret',
                     variable: 'DEMO_SECRET'
                 )]) {
                     sh '''
