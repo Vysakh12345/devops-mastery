@@ -1,4 +1,4 @@
-# DevOps Mastery Challenge
+# DevOps Challenge Application
 
 A Flask application with home and health endpoints, tested using pytest.
 
