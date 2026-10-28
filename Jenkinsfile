@@ -31,6 +31,20 @@ pipeline {
             }
         }
 
+        stage('Credential Masking') {
+            steps {
+                withCredentials([string(
+                    credentialsId: 'demo',
+                    variable: 'DEMO_SECRET'
+                )]) {
+                    sh '''
+                        echo "Credential masking test:"
+                        echo "$DEMO_SECRET"
+                    '''
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
