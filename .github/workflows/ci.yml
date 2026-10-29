@@ -39,3 +39,15 @@ jobs:
 
       - name: Run tests
         run: python -m pytest -v
+
+      - name: Verify secret masking
+        env:
+          DEMO_SECRET: ${{ secrets.Demo_secret }}
+        run: |
+          if [ -z "$DEMO_SECRET" ]; then
+            echo "ERROR: Demo_secret is missing or unavailable."
+            exit 1
+          fi
+          echo "Secret masking test:"
+          echo "$DEMO_SECRET"
+          echo "Secret masking step completed."
